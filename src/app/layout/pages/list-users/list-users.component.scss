@@ -3,26 +3,9 @@
   height: 100vh;
   display: flex;
   justify-content: space-between;
-
-  header {
-
-  }
-
-  main{
-    .container_card{
-      .card{
-
-      }
-    }
-
-  }
-
-  footer {
-    .paginator {
-      //width: 500px;
-    }
-  }
 }
-
+.card-header:hover{
+  background-color: #e5e5e5 !important;
+}
 
 

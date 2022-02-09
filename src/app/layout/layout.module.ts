@@ -8,15 +8,16 @@ import {MatInputModule} from "@angular/material/input";
 import {MatIconModule} from "@angular/material/icon";
 import {FormsModule} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
+import {MatDialogModule} from "@angular/material/dialog";
 
 
 @NgModule({
   declarations: [
-    ListUsersComponent
+    ListUsersComponent,
   ],
   imports: [
-    CommonModule, LayoutRoutingModule, MatPaginatorModule, MatFormFieldModule, MatInputModule, MatIconModule, FormsModule, MatButtonModule
-  ]
+    CommonModule, LayoutRoutingModule, MatPaginatorModule, MatFormFieldModule, MatInputModule, MatIconModule, FormsModule, MatButtonModule, MatDialogModule
+  ],
 })
 export class LayoutModule {
 }

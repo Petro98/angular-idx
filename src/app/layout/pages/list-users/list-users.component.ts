@@ -1,26 +1,25 @@
-import {Component, OnInit} from '@angular/core';
-import {PageEvent} from "@angular/material/paginator";
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ListUsersApiService} from "../../../shared/services/list-users-api.service";
 import {
   BehaviorSubject,
   debounceTime,
   distinctUntilChanged,
   map,
-  Observable,
   Subject,
   Subscription,
   switchMap,
-  tap
+  tap, timer
 } from "rxjs";
 import {UserInfoInterface, UserParensInterface} from "../../../shared/interfaces/user-info";
+import {ModalInfoUserComponent} from "../modals/modal-info-user/modal-info-user.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-list-users',
   templateUrl: './list-users.component.html',
   styleUrls: ['./list-users.component.scss']
 })
-export class ListUsersComponent implements OnInit {
-  cardList: any = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+export class ListUsersComponent implements OnInit, OnDestroy {
 
   public onSearch$ = new Subject<string>();
   private subscriptions: Subscription = new Subscription();
@@ -28,11 +27,13 @@ export class ListUsersComponent implements OnInit {
 
 
   public usersList: UserInfoInterface<string>[] = []
+  public limit: number = 10
 
+  isSpinner: boolean = false;
 
-  isShowPlaceholder: boolean = false;
-
-  constructor(private usersApiService: ListUsersApiService) {
+  constructor(private usersApiService: ListUsersApiService,
+              public dialog: MatDialog
+  ) {
   }
 
 
@@ -42,16 +43,24 @@ export class ListUsersComponent implements OnInit {
   }
 
   public refreshUsersList(limit: number): void {
+    this.limit = limit
     this.loadUsersList$.next({limit});
   }
+
+  public nextOnSearch(inputVel: string) {
+    this.onSearch$.next(inputVel)
+  }
+
 
   private loadMenuItemList() {
     const $ = this.loadUsersList$
       .pipe(
+        tap(res => this.isSpinner = true),
         switchMap(params =>
           this.usersApiService.getUsers(params.limit).pipe(
             tap(res => {
               this.usersList = res
+              this.isSpinner = false
               console.log(res)
             })
           )
@@ -61,12 +70,7 @@ export class ListUsersComponent implements OnInit {
     this.subscriptions.add($);
   }
 
-
-  public nextOnSearch(inputVel: string) {
-    this.onSearch$.next(inputVel)
-  }
-
-  public onSearch() {
+  private onSearch() {
     const $ = this.onSearch$.pipe(
       map(inputVel => inputVel.toLocaleLowerCase()),
       debounceTime(300),
@@ -79,4 +83,23 @@ export class ListUsersComponent implements OnInit {
     this.subscriptions.add($);
   }
 
+  public openDialog(card: UserInfoInterface<string>) {
+
+    const $ = timer(0).pipe(
+      switchMap(_ => this.dialog.open(ModalInfoUserComponent, {
+          data: {card},
+          maxWidth: '800px'
+        }).afterClosed()
+      )
+    ).subscribe(
+      data => console.log("Dialog output:", data)
+    );
+
+    this.subscriptions.add($);
+  }
+
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe()
+  }
 }
