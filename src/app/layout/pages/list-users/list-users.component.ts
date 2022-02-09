@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ListUsersApiService} from "../../../shared/services/list-users-api.service";
 import {
-  BehaviorSubject,
+  BehaviorSubject, catchError,
   debounceTime,
   distinctUntilChanged,
   map,
@@ -59,14 +59,20 @@ export class ListUsersComponent implements OnInit, OnDestroy {
         switchMap(params =>
           this.usersApiService.getUsers(params.limit).pipe(
             tap(res => {
-              this.usersList = res
+              if (res !== null)
+                this.usersList = res
+
               this.isSpinner = false
-              console.log(res)
             })
           )
         )
       )
-      .subscribe();
+      .subscribe({
+        error: error => {
+          alert('error');
+          this.isSpinner = false
+        }
+      });
     this.subscriptions.add($);
   }
 
@@ -77,14 +83,21 @@ export class ListUsersComponent implements OnInit, OnDestroy {
       distinctUntilChanged(),
       switchMap(inputVel => this.usersApiService.getUsers(10, inputVel)),
       tap(res => {
-        this.usersList = res
+        if (res !== null)
+          this.usersList = res
       })
-    ).subscribe()
+    ).subscribe(
+      {
+        error: error => {
+          alert('error');
+          this.isSpinner = false
+        }
+      }
+    )
     this.subscriptions.add($);
   }
 
   public openDialog(card: UserInfoInterface<string>) {
-
     const $ = timer(0).pipe(
       switchMap(_ => this.dialog.open(ModalInfoUserComponent, {
           data: {card},
