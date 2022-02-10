@@ -1,6 +1,6 @@
 import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {UserInfoInterface} from "../../../../shared/interfaces/user-info";
+import {UserInfoInterface} from "../../../../../shared/interfaces/user-info";
 
 
 

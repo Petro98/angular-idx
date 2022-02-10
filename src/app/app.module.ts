@@ -5,7 +5,7 @@ import {AppComponent} from './app.component';
 import {AppRoutingModule} from "./app-routing.module";
 import {LayoutComponent} from './layout/layout.component';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import {ListUsersApiService} from "./shared/services/list-users-api.service";
+import {ListUsersApiService} from "../shared/services/list-users-api.service";
 import {HttpClientModule} from '@angular/common/http'
 import {ModalInfoUserComponent} from "./layout/pages/modals/modal-info-user/modal-info-user.component";
 import {MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule} from "@angular/material/dialog";

@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ListUsersApiService} from "../../../shared/services/list-users-api.service";
+import {ListUsersApiService} from "../../../../shared/services/list-users-api.service";
 import {
   BehaviorSubject, catchError,
   debounceTime,
@@ -10,7 +10,7 @@ import {
   switchMap,
   tap, timer
 } from "rxjs";
-import {UserInfoInterface, UserParensInterface} from "../../../shared/interfaces/user-info";
+import {UserInfoInterface, UserParensInterface} from "../../../../shared/interfaces/user-info";
 import {ModalInfoUserComponent} from "../modals/modal-info-user/modal-info-user.component";
 import {MatDialog} from "@angular/material/dialog";
 

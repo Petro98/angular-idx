@@ -9,5 +9,4 @@ export interface UserInfoInterface<T> {
 export interface UserParensInterface {
   limit: number,
   name?: string
-
 }

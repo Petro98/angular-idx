@@ -9,7 +9,7 @@ const routes: Routes = [
     path: "",
     component: LayoutComponent,
     children: [{
-      path: 'one',
+      path: '',
       component: ListUsersComponent
     }]
   },
