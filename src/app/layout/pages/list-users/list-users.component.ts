@@ -1,10 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ListUsersApiService} from "../../../../shared/services/list-users-api.service";
 import {
-  BehaviorSubject, catchError,
+  BehaviorSubject,
   debounceTime,
   distinctUntilChanged,
-  map,
+  map, of,
   Subject,
   Subscription,
   switchMap,
@@ -29,7 +29,7 @@ export class ListUsersComponent implements OnInit, OnDestroy {
   public usersList: UserInfoInterface<string>[] = []
   public limit: number = 10
 
-  isSpinner: boolean = false;
+  public isSpinner: boolean = false;
 
   constructor(private usersApiService: ListUsersApiService,
               public dialog: MatDialog
@@ -78,7 +78,7 @@ export class ListUsersComponent implements OnInit, OnDestroy {
 
   private onSearch() {
     const $ = this.onSearch$.pipe(
-      map(inputVel => inputVel.toLocaleLowerCase()),
+      map(inputVel => inputVel.toLocaleLowerCase().trim()),
       debounceTime(300),
       distinctUntilChanged(),
       switchMap(inputVel => this.usersApiService.getUsers(10, inputVel)),
